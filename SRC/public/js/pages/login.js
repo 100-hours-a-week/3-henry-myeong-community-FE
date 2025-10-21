@@ -102,11 +102,11 @@ loginForm.addEventListener('submit', async (event) => {
 
         // 로그인 성공 처리
         if (result && result.data && result.data.accessToken) {
-            saveToken(response.data.accessToken);
+            saveToken(result.data.accessToken);
             console.log("로그인 성공! Access Token:", result.data.accessToken);
 
-            // 성공 후 /index.html (게시글 목록 페이지)로 이동
-            window.location.href = '/index.html';
+            // 성공 후 /posts.html (게시글 목록 페이지)로 이동
+            window.location.href = '/posts.html';
         } else {
             // API 응답 구조가 예상과 다른 경우 (예외적 상황)
             displayError("로그인 처리 중 오류가 발생했습니다.");
