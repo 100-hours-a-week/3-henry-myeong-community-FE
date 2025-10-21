@@ -74,6 +74,10 @@ export const getUserInfo = () => request('GET', '/api/users/me');
 export const updateUserInfo = (userData) => request('PATCH', '/api/users/me', userData);
 export const deleteUser = () => request('DELETE', '/api/users/me');
 
+//회원가입 중복 검증
+export const checkEmailAvailability = (email) => request('GET', '/api/users/email?email=' + email)
+export const checkNicknameAvailability = (nickname) => request('GET', '/api/users/nickname?nickname=' + nickname)
+
 // 게시글 관련
 export const getPosts = (cursor = null, size = 20) => {
     const params = new URLSearchParams({ size: size.toString() }); // size를 문자열로 변환
