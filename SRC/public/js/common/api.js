@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:8080';
 
 
 // 백엔드 API에 요청을 보내는 범용 함수.
-// Authorization 헤더 추가 및 기본적인 에러 처리를 담당합니다.
+// Authorization 헤더 추가 및 기본적인 에러 처리를 담당
 
 async function request(method, path, body = null) {
     const url = `${BASE_URL}${path}`;
@@ -14,7 +14,7 @@ async function request(method, path, body = null) {
 
     const token = getToken(); // auth 모듈에서 토큰 가져오기
     if (token) {
-        headers['Authorization'] = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가
+        headers['Authorization'] = `Bearer ${token}`;
     }
 
     const options = {

@@ -1,23 +1,35 @@
-let accessToken = null; // 이 모듈의 스코프 내 메모리에 토큰을 저장합니다 🧠
 
+const TOKEN_KEY = 'accessToken'; // sessionStorage에 사용할 키 이름
 
-//Access Token을 메모리에 저장합니다.
+/**
+ * Access Token을 sessionStorage에 저장합니다.
+ * @param {string} token - 서버로부터 받은 Access Token.
+ */
 export function saveToken(token) {
-    accessToken = token;
-    console.log("Access Token 저장 완료.");
+    sessionStorage.setItem(TOKEN_KEY, token); // ✅ sessionStorage에 저장
+    console.log("Access Token saved to sessionStorage.");
 }
 
+/**
+ * sessionStorage에서 Access Token을 가져옵니다.
+ * @returns {string | null} Access Token 또는 없으면 null.
+ */
 export function getToken() {
-    return accessToken;
+    return sessionStorage.getItem(TOKEN_KEY); // ✅ sessionStorage에서 읽기
 }
 
-//저장된 Access Token을 지웁니다 (로그아웃 효과).
+/**
+ * sessionStorage에서 Access Token을 삭제합니다.
+ */
 export function clearToken() {
-    accessToken = null;
-    console.log("Access Token 삭제 (로그아웃).");
+    sessionStorage.removeItem(TOKEN_KEY); // ✅ sessionStorage에서 삭제
+    console.log("Access Token cleared from sessionStorage (logged out).");
 }
 
-//현재 사용자가 로그인 상태인지 확인합니다 (Access Token 존재 여부).
+/**
+ * sessionStorage에 토큰이 있는지 확인하여 로그인 상태를 판단합니다.
+ * @returns {boolean} 토큰이 있으면 true, 없으면 false.
+ */
 export function isLoggedIn() {
-    return accessToken !== null;
+    return sessionStorage.getItem(TOKEN_KEY) !== null; // ✅ sessionStorage 확인
 }
