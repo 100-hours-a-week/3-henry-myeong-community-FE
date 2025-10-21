@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 작성 - KTB 커뮤니티</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/post-editor.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-left">
+            <a href="javascript:history.back()" class="back-button">&lt;</a> 
+            <div class="logo">
+                <h1><a href="/"><img src="/images/logo_KTB_light.svg" alt="KTB 커뮤니티 로고"></a></h1>
+            </div>
+        </div>
+        <div class="user-profile">
+            <a href="/profile.html">
+                <img id="user-profile-img" src="/images/default-profile.png" alt="내 프로필">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="editor-container">
+            <h2 class="editor-title">게시글 작성</h2>
+            <form id="post-editor-form" novalidate>
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" required maxlength="26" placeholder="제목을 입력하세요">
+                    <p id="title-char-count">0 / 26</p>
+                    <p class="error-message" id="title-error"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea id="content" name="content" required placeholder="내용을 입력하세요"></textarea>
+                    <p class="error-message" id="content-error"></p>
+                </div>
+
+  
+                <div class="image-upload-section">
+                    <label>이미지 추가 (URL)</label>
+                    <div>
+                        <input type="text" id="image-url-input" placeholder="업로드된 이미지 URL 붙여넣기" style="width: 70%; margin-right: 5px; padding: 5px;">
+                        <button type="button" id="add-image-url-button">URL 추가</button>
+                    </div>
+                    <ul id="image-url-list">
+                    </ul>
+                     <p class="error-message" id="image-error"></p>
+                </div>
+
+                <p class="error-message" id="form-error"></p>
+
+                <div class="complete-button-container">
+                    <button type="submit" id="complete-button" class="complete-button" disabled>완료</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 KTB Community. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="/js/pages/post-editor.js"></script>
+</body>
+</html>

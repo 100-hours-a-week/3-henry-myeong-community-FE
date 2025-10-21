@@ -1,0 +1,135 @@
+/* post-editor.html specific styles */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+.header-left { 
+    display: flex; 
+    align-items: center; 
+}
+
+.back-button { margin-right: 15px; 
+    font-size: 1.5em; 
+    color: #333; 
+    text-decoration: none; 
+}
+
+.logo img { 
+    height: 30px; 
+}
+
+.user-profile img { width: 35px; 
+    height: 35px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 1px solid #ddd; 
+}
+
+.user-profile a { 
+    display: block; 
+}
+
+.editor-container { 
+    max-width: 800px; 
+    margin: 30px auto; 
+    padding: 20px; 
+}
+
+.editor-title { 
+    text-align: center; 
+    margin-bottom: 30px; 
+    font-size: 1.5em; 
+    font-weight: bold; 
+}
+
+.form-group { 
+    margin-bottom: 20px; 
+}
+
+.form-group label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-weight: 500; 
+}
+
+.form-group input[type="text"], .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em; /* Ensure consistent font size */
+    font-family: inherit; /* Ensure consistent font family */
+}
+.form-group textarea {
+    min-height: 250px;
+    resize: vertical; /* Allow vertical resizing only */
+}
+#title-char-count { 
+    font-size: 0.8em; 
+    color: #888; 
+    text-align: right; 
+}
+
+.image-upload-section { 
+    margin-bottom: 20px; 
+}
+
+.image-upload-section button { 
+    padding: 5px 10px; 
+    margin-bottom: 10px; 
+}
+
+#image-url-list { 
+    list-style: none; 
+    padding: 0; 
+}
+
+#image-url-list li {
+    background-color: #f0f0f0; 
+    padding: 5px 10px; 
+    margin-bottom: 5px; 
+    border-radius: 3px; 
+    font-size: 0.9em;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+#image-url-list li button { 
+    background: #ddd; 
+    border: none; padding: 2px 5px; 
+    cursor: pointer; 
+}
+
+.complete-button-container { 
+    text-align: right; 
+    margin-top: 30px; 
+}
+
+.complete-button {
+    padding: 12px 25px;
+    background-color: #ACA0EB; /* Disabled color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s;
+}
+.complete-button:not(:disabled) {
+    background-color: #7F6AEE; /* Enabled color */
+}
+
+.complete-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+}
+.error-message { color: red; 
+    font-size: 0.8rem; 
+    margin-top: 4px;
+    min-height: 1.2em; 
+    display: none; 
+}

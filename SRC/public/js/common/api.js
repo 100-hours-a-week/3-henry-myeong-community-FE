@@ -13,8 +13,9 @@ async function request(method, path, body = null) {
     };
 
     const token = getToken(); // auth 모듈에서 토큰 가져오기
+    console.log(token);
     if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
+        headers['authorization'] = `Bearer ${token}`;
     }
 
     const options = {
