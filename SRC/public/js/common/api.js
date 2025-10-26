@@ -1,7 +1,6 @@
 import { getToken, clearToken } from './auth.js';
 
-const BASE_URL = 'http://localhost:8080'; 
-
+const BASE_URL = "http://localhost:8080/api"
 
 // 백엔드 API에 요청을 보내는 범용 함수.
 // Authorization 헤더 추가 및 기본적인 에러 처리를 담당
@@ -13,9 +12,8 @@ async function request(method, path, body = null) {
     };
 
     const token = getToken(); // auth 모듈에서 토큰 가져오기
-    console.log(token);
     if (token) {
-        headers['authorization'] = `Bearer ${token}`;
+        headers['Authorization'] = `Bearer ${token}`;
     }
 
     const options = {
@@ -66,18 +64,18 @@ async function request(method, path, body = null) {
 
 
 // 인증 관련
-export const login = (email, password) => request('POST', '/api/auth', { email, password });
-export const logout = () => request('DELETE', '/api/auth');
+export const login = (email, password) => request('POST', '/auth', { email, password });
+export const logout = () => request('DELETE', '/auth');
 
 // 사용자 관련
-export const signup = (userData) => request('POST', '/api/users', userData);
-export const getUserInfo = () => request('GET', '/api/users/me');
-export const updateUserInfo = (userData) => request('PATCH', '/api/users/me', userData);
-export const deleteUser = () => request('DELETE', '/api/users/me');
+export const signup = (userData) => request('POST', '/users', userData);
+export const getUserInfo = () => request('GET', '/users/me');
+export const updateUserInfo = (userData) => request('PATCH', '/users/me', userData);
+export const deleteUser = () => request('DELETE', '/users/me');
 
 //회원가입 중복 검증
-export const checkEmailAvailability = (email) => request('GET', '/api/users/email?email=' + email)
-export const checkNicknameAvailability = (nickname) => request('GET', '/api/users/nickname?nickname=' + nickname)
+export const checkEmailAvailability = (email) => request('GET', '/users/email?email=' + email)
+export const checkNicknameAvailability = (nickname) => request('GET', '/users/nickname?nickname=' + nickname)
 
 // 게시글 관련
 export const getPosts = (cursor = null, size = 20) => {
@@ -85,9 +83,31 @@ export const getPosts = (cursor = null, size = 20) => {
     if (cursor !== null) { // cursor가 null이 아닐 때만 추가
         params.append('cursor', cursor.toString()); // cursor를 문자열로 변환
     }
-    return request('GET', `/api/posts?${params.toString()}`);
+    return request('GET', `/posts?${params.toString()}`);
 };
-export const getPostDetail = (postId) => request('GET', `/api/posts/${postId}`);
-export const createPost = (postData) => request('POST', '/api/posts', postData); // 단순화를 위해 JSON 가정, FormData 필요 시 수정
-export const updatePost = (postId, postData) => request('PATCH', `/api/posts/${postId}`, postData);
-export const deletePost = (postId) => request('DELETE', `/api/posts/${postId}`);
+export const getPostDetail = (postId) => request('GET', `/posts/${postId}`);
+export const createPost = (postData) => request('POST', '/posts', postData); // 단순화를 위해 JSON 가정, FormData 필요 시 수정
+export const updatePost = (postId, postData) => request('PATCH', `/posts/${postId}`, postData);
+export const deletePost = (postId) => request('DELETE', `/posts/${postId}`);
+
+//좋아요 관련
+export const likePost = (postId) => request('POST', `/posts/${postId}/like`)
+export const unlikePost = (postId) => request('DELETE', `/posts/${postId}/like`)
+
+//댓글 관련
+export const createComment = (postId, commentData) => request('POST', `/comments?postid=` + postId, commentData)
+export const updateComment = (commentId, commentData) => request('PATCH', `/comments/${commentId}`, commentData)
+export const deleteComment = (commentId) => request('DELETE', `/comments/${commentId}`)
+export const getComment = (commentId) => request('GET', `/comments/${commentId}`)
+
+export const getComments = (postId, cursor = null, size = 20) => {
+
+    const path = `/comments`;
+    const params = new URLSearchParams({ postid : postId, size: size.toString() });
+
+    if (cursor !== null) {
+        params.append('cursor', cursor.toString());
+    }
+    // request 함수 호출
+    return request('GET', `${path}?${params.toString()}`);
+};
