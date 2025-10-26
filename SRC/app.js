@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const PORT = 3000; // 서버를 실행할 포트
+const PORT = 3000;
 
 app.get('/', (req, res) => {
   res.redirect('/login.html');
