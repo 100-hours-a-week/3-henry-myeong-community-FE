@@ -1,6 +1,3 @@
-/* post-detail.html specific styles */
-
-/* Prevent background scroll when modal is open */
 body.modal-open {
     overflow: hidden;
 }

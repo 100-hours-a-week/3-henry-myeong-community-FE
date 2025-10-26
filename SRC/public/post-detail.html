@@ -9,19 +9,7 @@
     <link rel="stylesheet" href="/css/post-detail.css">
 </head>
 <body>
-    <header class="page-header">
-        <div class="header-left">
-            <a id="back-button" class="back-button">&lt;</a>
-            <div class="logo">
-                <h1><a href="/"><img src="/images/logo_KTB_light.svg" alt="KTB 커뮤니티 로고"></a></h1>
-            </div>
-        </div>
-        <div class="user-profile">
-            <a href="/profile.html">
-                <img id="user-profile-img" src="/images/default-profile.png" alt="내 프로필">
-            </a>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
 
     <main>
         <div class="post-detail-container" id="post-detail">
@@ -69,9 +57,7 @@
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 KTB Community. All rights reserved.</p>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <div class="modal-overlay" id="confirmation-modal">
         <div class="modal-content">
@@ -84,5 +70,6 @@
     </div>
 
     <script type="module" src="/js/pages/post-detail.js"></script>
+    <script type="module" src="/js/common/layout.js"></script>
 </body>
 </html>

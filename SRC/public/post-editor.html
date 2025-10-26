@@ -9,19 +9,8 @@
     <link rel="stylesheet" href="/css/post-editor.css">
 </head>
 <body>
-    <header class="page-header">
-        <div class="header-left">
-            <a href="javascript:history.back()" class="back-button">&lt;</a> 
-            <div class="logo">
-                <h1><a href="/"><img src="/images/logo_KTB_light.svg" alt="KTB 커뮤니티 로고"></a></h1>
-            </div>
-        </div>
-        <div class="user-profile">
-            <a href="/profile.html">
-                <img id="user-profile-img" src="/images/default-profile.png" alt="내 프로필">
-            </a>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
+
 
     <main>
         <div class="editor-container">
@@ -61,10 +50,9 @@
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 KTB Community. All rights reserved.</p>
-    </footer>
+    <div id="footer-placeholder"></div>   
 
     <script type="module" src="/js/pages/post-editor.js"></script>
+    <script type="module" src="/js/common/layout.js"></script>
 </body>
 </html>

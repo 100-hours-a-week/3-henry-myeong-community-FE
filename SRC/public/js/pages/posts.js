@@ -1,4 +1,3 @@
-// /js/pages/index.js
 import { getPosts, getUserInfo } from '/js/common/api.js';
 import { isLoggedIn, getToken } from '/js/common/auth.js';
 import { formatCount, formatDateTime, updateUserProfileHeader } from '../common/common.js';
@@ -24,6 +23,7 @@ function createPostCard(post) {
     const createdAtFormatted = formatDateTime(post.createdAt);
     // const authorProfile = post.author.profileImageUrl || '/images/default-profile.png';
     const authorProfile = '/images/default-profile.png';
+    const authorNickname = post.user.nickname;
 
     card.innerHTML = `
         <h3>${post.title}</h3>
@@ -35,7 +35,7 @@ function createPostCard(post) {
         </div>
         <div class="post-author">
             <img src="${authorProfile}" alt="${post.user.nickname} 프로필">
-            <span>${post.user.nickname}</span>
+            <span>${authorNickname}</span>
         </div>
     `;
 
@@ -49,7 +49,7 @@ function createPostCard(post) {
 
 // --- Data Loading & Infinite Scroll ---
 
-// 게시글 로드 함수// 게시글 로드 함수
+// 게시글 로드 함수
 async function loadPosts() {
     // 로딩 중이거나 다음 페이지 없으면 중단 (hasNextPage가 false면 여기서 걸러짐)
     if (isLoading || !hasNextPage) {
@@ -57,7 +57,7 @@ async function loadPosts() {
         // 로딩 인디케이터에 마지막 메시지를 표시하고 종료할 수 있음
         if (!hasNextPage) {
              loadingIndicator.textContent = '모든 게시글을 불러왔습니다.';
-             loadingIndicator.style.display = 'block'; // 메시지 보이도록 유지
+             loadingIndicator.style.display = 'block';
         }
         return;
     }
@@ -115,7 +115,7 @@ async function loadPosts() {
         isLoading = false;
         // ✅ 로딩 인디케이터 관리: 다음 페이지가 없거나 로딩 중 에러 메시지가 표시되어야 하는 경우 숨기지 않음
         if (hasNextPage) {
-            loadingIndicator.style.display = 'none';
+            // loadingIndicator.style.display = 'none';
         } else {
              // 마지막 페이지 메시지나 에러 메시지가 보이도록 유지
              loadingIndicator.style.display = 'block';
@@ -125,16 +125,34 @@ async function loadPosts() {
 
 // Intersection Observer 설정 (스크롤 감지)
 const observer = new IntersectionObserver((entries) => {
-    // 로딩 인디케이터(loadingIndicator)가 화면에 보이면 다음 페이지 로드
-    if (entries[0].isIntersecting && hasNextPage) {
+    console.log('Observer callback:', 
+        'Intersecting:', entries[0].isIntersecting, 
+        'HasNext:', hasNextPage, 
+        'Not Loading:', !isLoading 
+    );
+
+    // 로딩 중이 아니고, 다음 페이지가 있고, 요소가 화면에 보일 때만 로드
+    if (entries[0].isIntersecting && hasNextPage && !isLoading) { 
+        console.log('Conditions met, calling loadPosts...'); // 🚩 호출 직전 로그 추가
         loadPosts();
     }
-}, { threshold: 0.8 }); // 인디케이터가 80% 보일 때 감지
+}, { threshold: 0.01 });
 
 
 // 페이지 로드 시 초기 작업
-document.addEventListener('DOMContentLoaded', () => {
-    // updateUserProfileHeader(); // 헤더 업데이트
-    loadPosts(); // 첫 페이지 게시글 로드
-    observer.observe(loadingIndicator); // 스크롤 감지 시작
+// document.addEventListener('DOMContentLoaded', () => {
+//     // updateUserProfileHeader(); // 헤더 업데이트
+//     loadPosts(); // 첫 페이지 게시글 로드
+//     observer.observe(loadingIndicator); // 스크롤 감지 시작
+// });
+document.addEventListener('DOMContentLoaded', async () => {
+    // ... updateUserProfileHeader() ...
+    await loadPosts(); // 첫 페이지 게시글 로드 (await 필수)
+    
+    if (hasNextPage) { 
+        observer.observe(loadingIndicator); 
+        console.log("Observer started observing.");
+    } else {
+        console.log("No next page, observer not started.");
+    }
 });
