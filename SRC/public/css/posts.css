@@ -1,23 +1,7 @@
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-}
-.logo img { height: 30px; }
-.user-profile img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #ddd;
-}
-.user-profile a { display: block; } /* Make the link cover the image */
 .intro-section {
     padding: 20px;
     text-align: center;
-    background-color: #f9f9f9;
+    /* background-color: #f9f9f9; */
     border-bottom: 1px solid #eee;
     position: relative; /* For write button positioning */
 }
@@ -81,5 +65,5 @@
 #loading-indicator {
     text-align: center;
     padding: 20px;
-    display: none; /* Initially hidden */
+    /* display: none; Initially hidden */
 }

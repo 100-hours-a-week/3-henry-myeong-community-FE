@@ -30,7 +30,7 @@ const commentSubmitButton = document.getElementById('comment-submit-button');
 const commentList = document.getElementById('comment-list');
 const userProfileImg = document.getElementById('user-profile-img');
 const backButton = document.getElementById('back-button');
-const commentLoadingIndicator = document.getElementById('comment-loading-indicator'); // ✅ 댓글 로딩 요소 추가
+const commentLoadingIndicator = document.getElementById('comment-loading-indicator'); 
 
 
 // Modal Elements
@@ -112,12 +112,12 @@ function renderPost(postData) {
     likeCountSpan.textContent = `좋아요 ${formatCount(postData.likeCount || 0)}`;
     viewCountSpan.textContent = `조회수 ${formatCount(postData.viewCount || 0)}`;
 
-    // ✅ 댓글 수 업데이트: getPostDetail 응답의 commentCount 사용
-    const initialCommentCount = postData.commentCount || 0; // API 응답에 commentCount가 있다고 가정
+    // 댓글 수 업데이트
+    const initialCommentCount = postData.commentCount || 0;
     commentCountHeader.textContent = initialCommentCount;
     commentCountDisplay.textContent = `댓글 ${formatCount(initialCommentCount)}`;
 
-    if (postData.isLikedByCurrentUser) {
+    if (postData.isLiked) {
         likeButton.classList.add('liked');
     } else {
         likeButton.classList.remove('liked');
@@ -180,10 +180,9 @@ function createCommentElement(comment) {
 
 // --- Event Handlers ---
 
-backButton.addEventListener('click', () => {
-    // Go back to the previous page in history, likely the post list
-    history.back();
-});
+// backButton.addEventListener('click', () => {
+//     history.back();
+// });
 
 function handleDeletePost() {
     showModal("게시글을 정말로 삭제하시겠습니까?", async () => {
@@ -208,36 +207,57 @@ likeButton.addEventListener('click', async () => {
 
     const currentlyLiked = likeButton.classList.contains('liked');
     const postId = currentPostData.postId;
+    let originalLikeCount = currentPostData.likeCount || 0; // 현재 좋아요 수 저장
+
+    // API 호출 전 버튼 임시 비활성화
+    likeButton.disabled = true;
 
     try {
-        let response;
-        if (isEditingComment) {
-            response = await updateComment(editingCommentId, { content });
-            // ... (수정된 댓글 UI 업데이트) ...
-            // 리스트 재로딩 대신 해당 li 요소 내용만 업데이트
-            const commentElement = commentList.querySelector(`li[data-comment-id="${editingCommentId}"]`);
-            if(commentElement) {
-                commentElement.querySelector('.comment-content').textContent = response.data.content;
-                // 필요 시 updatedAt 타임스탬프도 업데이트
+        let updatedLikeCount;
+        let updatedIsLiked;
+
+        if (currentlyLiked) {
+            // --- 좋아요 취소 로직 ---
+            const response = await unlikePost(postId); // 취소 API 호출
+
+            if (response && response.status === 'success') {
+                updatedIsLiked = false;
+                updatedLikeCount = Math.max(0, originalLikeCount - 1);
+            } else {
+                 throw new Error("좋아요 취소 응답 형식이 올바르지 않습니다.");
             }
-             isEditingComment = false;
-             editingCommentId = null;
-             commentInput.value = '';
-             commentSubmitButton.textContent = '댓글 등록';
 
         } else {
-            response = await createComment(postId, { content });
-            // ✅ 새 댓글을 리스트 맨 아래에 추가
-            commentList.appendChild(createCommentElement(response.data));
-            // ✅ 댓글 수 업데이트 (단순 증가)
-            const currentCount = parseInt(commentCountHeader.textContent || '0') + 1;
-            commentCountHeader.textContent = currentCount;
-            commentCountDisplay.textContent = `댓글 ${formatCount(currentCount)}`;
-            commentInput.value = '';
+            const response = await likePost(postId);
+
+            if (response && response.data && typeof response.data.likeCount === 'number' && typeof response.data.isLiked === 'boolean') {
+                updatedLikeCount = response.data.likeCount;
+                updatedIsLiked = response.data.isLiked;
+            } else {
+                throw new Error("좋아요 응답 형식이 올바르지 않습니다.");
+            }
         }
+
+        // 좋아요 숫자 업데이트
+        likeCountSpan.textContent = `좋아요 ${formatCount(updatedLikeCount)}`;
+
+        // 버튼 스타일 업데이트
+        if (updatedIsLiked) {
+            likeButton.classList.add('liked');
+        } else {
+            likeButton.classList.remove('liked');
+        }
+
+        // 내부 상태 업데이트
+        currentPostData.likeCount = updatedLikeCount;
+        currentPostData.isliked = updatedIsLiked;
+
     } catch (error) {
         console.error("좋아요 처리 실패:", error);
         alert(`좋아요 처리 중 오류 발생: ${error.message}`);
+    } finally {
+        // 버튼 다시 활성화
+        likeButton.disabled = false;
     }
 });
 
@@ -393,8 +413,7 @@ async function loadComments() {
                  const loadedCommentCount = commentList.children.length;
                  // Avoid overwriting a potentially correct total count from first load
                  if (commentCursor !== null || !paginationInfo?.totalElements) {
-                     commentCountHeader.textContent = loadedCommentCount;
-                     commentCountDisplay.textContent = `댓글 ${formatCount(loadedCommentCount)}`;
+                    //  commentCountHeader.textContent = loadedCommentCount;
                  } else if (commentCursor === null && comments.length === 0){ // First load, 0 comments
                      commentCountHeader.textContent = 0;
                      commentCountDisplay.textContent = `댓글 0`;
@@ -419,7 +438,7 @@ async function loadComments() {
         isLoadingComments = false;
         if (hasMoreComments) {
             // 다음 페이지가 있으면 로딩 완료 후 숨김
-            commentLoadingIndicator.style.display = 'none';
+            // commentLoadingIndicator.style.display = 'none';
         } else {
             // 다음 페이지가 없으면 마지막 메시지 표시 (block 유지)
             commentLoadingIndicator.style.display = 'block';

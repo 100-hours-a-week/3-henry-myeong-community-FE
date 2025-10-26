@@ -91,8 +91,8 @@ export const updatePost = (postId, postData) => request('PATCH', `/posts/${postI
 export const deletePost = (postId) => request('DELETE', `/posts/${postId}`);
 
 //좋아요 관련
-export const likePost = (postId) => request('POST', `/posts/${postId}/like`)
-export const unlikePost = (postId) => request('DELETE', `/posts/${postId}/like`)
+export const likePost = (postId) => request('POST', `/like?postid=${postId}`)
+export const unlikePost = (postId) => request('DELETE', `/like?postid=${postId}`)
 
 //댓글 관련
 export const createComment = (postId, commentData) => request('POST', `/comments?postid=` + postId, commentData)
