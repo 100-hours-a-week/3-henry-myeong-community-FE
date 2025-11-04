@@ -128,7 +128,7 @@ function renderPost(postData) {
     if (currentUser && postData.isAuthor) {
         const editButton = document.createElement('button');
         editButton.textContent = '수정';
-        editButton.onclick = () => { window.location.href = `/post-editor.html?postId=${postData.postId}`; };
+        editButton.onclick = () => { window.location.href = `/post-editor.html?postid=${postData.postId}`; };
         const deleteButton = document.createElement('button');
         deleteButton.textContent = '삭제';
         deleteButton.onclick = handleDeletePost;
@@ -189,7 +189,7 @@ function handleDeletePost() {
         try {
             await deletePost(currentPostData.postId);
             alert("게시글이 삭제되었습니다.");
-            window.location.href = '/index.html'; // Redirect to list after deletion
+            window.location.href = '/posts.html'; // Redirect to list after deletion
         } catch (error) {
             console.error("게시글 삭제 실패:", error);
             alert(`게시글 삭제 중 오류 발생: ${error.message}`);
@@ -331,7 +331,7 @@ function handleEditCommentStart(comment) {
 function handleDeleteComment(commentId) {
      showModal("댓글을 정말로 삭제하시겠습니까?", async () => {
         try {
-            await deleteComment(currentPostData.postId, commentId);
+            await deleteComment(commentId);
             const commentElement = commentList.querySelector(`li[data-comment-id="${commentId}"]`);
             if (commentElement) commentElement.remove();
 
@@ -482,7 +482,7 @@ async function initializePage() {
                 }
             }
         }
-        await updateUserProfileHeader(userProfileImg, userResponse); // Update header based on login status
+        // await updateUserProfileHeader(userProfileImg, userResponse); // Update header based on login status
 
         // Fetch post details (this needs to return comments too, or fetch separately)
         const postResponse = await getPostDetail(postId);

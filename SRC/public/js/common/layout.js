@@ -1,6 +1,7 @@
 // /js/common/layout.js
 import { isLoggedIn, clearToken } from './auth.js'; // auth.js 경로 확인
 import { getUserInfo } from './api.js';      // api.js 경로 확인
+import { updateUserProfileHeader } from './common.js';
 
 // HTML 조각 파일을 가져와 지정된 요소에 삽입하는 함수 
 async function loadComponent(url, elementId) {

@@ -21,7 +21,7 @@ const userProfileImg = document.getElementById('user-profile-img');
 
 // --- 상태 변수 ---
 let currentPostId = null;
-let currentUser = null;
+// let currentUser = null;
 let addedImageUrls = []; // 추가/관리되는 이미지 URL 저장 배열
 let isEditMode = false; // 수정 모드 여부 플래그
 
@@ -84,7 +84,7 @@ async function loadPostData(postId) {
         console.log(postData)
 
         // 권한 확인 (서버 isAuthor 값 활용)
-        if (!currentUser || !postData.isAuthor) {
+        if (!postData.isAuthor) {
              alert("수정 권한이 없습니다.");
              // 상세 페이지로 돌려보내거나 목록으로 이동
              window.location.href = `/post-detail.html?postid=${postId}`;
@@ -204,12 +204,13 @@ postEditorForm.addEventListener('submit', async (event) => {
 // --- Initial Setup ---
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. 로그인 확인 및 사용자 정보 로드
-    const loggedIn = await updateUserProfileHeader(userProfileImg);
-    if (!loggedIn) return; // 로그인 안되어 있으면 중단
+    // const loggedIn = await updateUserProfileHeader(userProfileImg, );
+    const loggedIn = isLoggedIn();
+    if (!loggedIn) return; 
 
     // 2. URL에서 postId 확인하여 모드 결정
     const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('postId');
+    const postId = urlParams.get('postid');
 
     if (postId && !isNaN(postId)) { // postId가 있고 숫자인 경우 -> 수정 모드
         isEditMode = true;
