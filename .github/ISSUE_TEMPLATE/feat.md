@@ -1,10 +1,9 @@
 ---
-name: 이슈 생성 템플릿
-about: 통일된 이슈 형식을 위한 템플릿입니다.
-title: "  : Issue Title"
-labels: ''
-assignees: Hyeseong-Myeong
-
+name: "✨ 기능 요청"
+about: "새로운 기능 또는 명세가 있나요?"
+title: "[기능 요청] 제목을 입력해 주세요"
+labels: "✨ 기능 요청"
+assignees: ""
 ---
 
 ## 📄 설명
